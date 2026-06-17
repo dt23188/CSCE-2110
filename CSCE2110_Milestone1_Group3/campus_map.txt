@@ -1,0 +1,7 @@
+6 8
+P R B B R R C L
+R R R R R B R R
+C C R R R R R R
+R R B R L R C R
+R R R R R R R R
+P X R B C R L R

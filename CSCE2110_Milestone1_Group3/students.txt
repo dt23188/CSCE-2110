@@ -1,0 +1,6 @@
+3001 Ethan BIO 3.84
+3002 Mia MED 3.92
+3003 Lucas CHEM 3.21
+3004 Harper BIO 3.58
+3005 Evelyn MED 3.73
+3006 Logan CHEM 3.05
