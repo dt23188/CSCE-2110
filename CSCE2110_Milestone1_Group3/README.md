@@ -7,10 +7,10 @@ Campus Exploration and Student Resource Management System
 Group 3 - Medical School Campus
 
 ## Group Members
-- Student 1:
-- Student 2:
-- Student 3:
-- Student 4:
+- Student 1: Devin Tiernan
+- Student 2: Evan Matthews
+- Student 3: Julian Gonzalez Delgado
+- Student 4: Kamryn Jones
 
 ## Description
 This Milestone 1 submission includes the beginning version of the campus exploration and student management system for the Group 3 Medical School Campus variant.

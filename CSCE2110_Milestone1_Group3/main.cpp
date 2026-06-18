@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <limits>
 #include "CampusMap.h"
 #include "StudentList.h"
 #include "FileManager.h"
@@ -17,11 +18,59 @@ void displayMenu() {
     cout << "Enter choice: ";
 }
 
+int getValidInteger(const string& prompt) {
+    int value;
+
+    while (true) {
+        cout << prompt;
+
+        if (cin >> value) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return value;
+        }
+
+        cout << "Invalid input. Please enter a whole number." << endl;
+
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+}
+
+int getValidStudentID(const string& prompt) {
+    while (true) {
+        int id = getValidInteger(prompt);
+
+        if (id > 0) {
+            return id;
+        }
+
+        cout << "Student ID must be greater than zero." << endl;
+    }
+}
+
+float getValidGPA(const string& prompt) {
+    float gpa;
+
+    while (true) {
+        cout << prompt;
+
+        if (cin >> gpa && gpa >= 0.0f && gpa <= 4.0f) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return gpa;
+        }
+
+        cout << "Invalid GPA. Enter a value from 0.0 to 4.0." << endl;
+
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+}
+
+
 Student getStudentInput() {
     Student student;
 
-    cout << "Enter student ID: ";
-    cin >> student.id;
+    student.id = getValidStudentID("Enter student ID: ");
 
     cout << "Enter student name: ";
     cin >> student.name;
@@ -29,8 +78,7 @@ Student getStudentInput() {
     cout << "Enter student major: ";
     cin >> student.major;
 
-    cout << "Enter student GPA: ";
-    cin >> student.gpa;
+    student.gpa = getValidGPA("Enter student GPA: ");
 
     return student;
 }
@@ -60,14 +108,7 @@ int main() {
 
     while (choice != 5) {
         displayMenu();
-        cin >> choice;
-
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "Invalid input. Please enter a number." << endl;
-            continue;
-        }
+        choice = getValidInteger("");
 
         switch (choice) {
             case 1:
@@ -85,10 +126,9 @@ int main() {
             }
 
             case 3: {
-                int searchID;
-
-                cout << "Enter student ID to search: ";
-                cin >> searchID;
+                int searchID = getValidStudentID(
+                "Enter student ID to search: "
+            );
 
                 Student* foundStudent = studentList.searchStudent(searchID);
 
