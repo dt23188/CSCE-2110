@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// Function to display the main menu
 void displayMenu() {
     cout << endl;
     cout << "===== Medical School Campus System - Milestone 1 =====" << endl;
@@ -18,6 +19,7 @@ void displayMenu() {
     cout << "Enter choice: ";
 }
 
+// Function to get a valid integer input from the user
 int getValidInteger(const string& prompt) {
     int value;
 
@@ -36,6 +38,7 @@ int getValidInteger(const string& prompt) {
     }
 }
 
+// Function to get a valid student ID (greater than zero) from the user
 int getValidStudentID(const string& prompt) {
     while (true) {
         int id = getValidInteger(prompt);
@@ -48,6 +51,7 @@ int getValidStudentID(const string& prompt) {
     }
 }
 
+// Function to get a valid GPA (between 0.0 and 4.0) from the user
 float getValidGPA(const string& prompt) {
     float gpa;
 
@@ -66,7 +70,7 @@ float getValidGPA(const string& prompt) {
     }
 }
 
-
+//  Function to get student input from the user and return a Student object
 Student getStudentInput() {
     Student student;
 
@@ -83,80 +87,90 @@ Student getStudentInput() {
     return student;
 }
 
+// Main function to run the program
 int main() {
+	// Create instances of CampusMap and StudentList
     CampusMap campusMap;
     StudentList studentList;
 
+	// Prompt the user for filenames and load the campus map and student records
     string mapFilename;
     string studentFilename;
 
+	// Load campus map and student records from files
     cout << "Enter campus map filename: ";
     cin >> mapFilename;
 
+	// Load the campus map from campus_map.txt
     if (campusMap.loadMap(mapFilename)) {
         cout << "Campus map loaded successfully." << endl;
     }
 
+	// Load student records from student_records.txt
     cout << "Enter student records filename: ";
     cin >> studentFilename;
 
+	// Load the student records from student_records.txt
     if (FileManager::loadStudents(studentFilename, studentList)) {
         cout << "Student records loaded successfully." << endl;
     }
 
+	// Main loop to display the menu and handle user choices
     int choice = 0;
 
+	// Loop until the user chooses menu options 1-4, option 5 exits
     while (choice != 5) {
         displayMenu();
         choice = getValidInteger("");
 
         switch (choice) {
-            case 1:
-                campusMap.displayMap();
-                break;
+        case 1:
+            campusMap.displayMap();
+            break;
 
-            case 2: {
-                Student newStudent = getStudentInput();
+        case 2: {
+            Student newStudent = getStudentInput();
 
-                if (studentList.addStudent(newStudent)) {
-                    cout << "Student added successfully." << endl;
-                }
-
-                break;
+            if (studentList.addStudent(newStudent)) {
+                cout << "Student added successfully." << endl;
             }
 
-            case 3: {
-                int searchID = getValidStudentID(
+            break;
+        }
+
+        case 3: {
+            int searchID = getValidStudentID(
                 "Enter student ID to search: "
             );
 
-                Student* foundStudent = studentList.searchStudent(searchID);
+            Student* foundStudent = studentList.searchStudent(searchID);
 
-                if (foundStudent != nullptr) {
-                    cout << endl;
-                    cout << "Student Found:" << endl;
-                    cout << "ID: " << foundStudent->id << endl;
-                    cout << "Name: " << foundStudent->name << endl;
-                    cout << "Major: " << foundStudent->major << endl;
-                    cout << "GPA: " << foundStudent->gpa << endl;
-                } else {
-                    cout << "Student not found." << endl;
-                }
-
-                break;
+            if (foundStudent != nullptr) {
+                cout << endl;
+                cout << "Student Found:" << endl;
+                cout << "ID: " << foundStudent->id << endl;
+                cout << "Name: " << foundStudent->name << endl;
+                cout << "Major: " << foundStudent->major << endl;
+                cout << "GPA: " << foundStudent->gpa << endl;
+            }
+            else {
+                cout << "Student not found." << endl;
             }
 
-            case 4:
-                studentList.displayStudents();
-                break;
+            break;
+        }
 
-            case 5:
-                cout << "Exiting program." << endl;
-                break;
+        case 4:
+            studentList.displayStudents();
+            break;
 
-            default:
-                cout << "Invalid choice. Please try again." << endl;
-                break;
+        case 5:
+            cout << "Exiting program." << endl;
+            break;
+
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
         }
     }
 
