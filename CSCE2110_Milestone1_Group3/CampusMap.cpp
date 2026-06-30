@@ -28,10 +28,28 @@ bool CampusMap::loadMap(const string& filename) {
     campus.resize(rows, vector<char>(cols)); //Resizes the campus map based on rows and columns
     //Reads each character from the file into the campus map
     for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            inputFile >> campus[i][j]; //Stores the map character at the current row and column
+    for (int j = 0; j < cols; j++) {
+        char symbol;
+
+        if (!(inputFile >> symbol)) {
+            cout << "Error: Map file is missing locations." << endl;
+            campus.clear();
+            rows = 0;
+            cols = 0;
+            return false;
         }
+
+        if (string("RBCLPX").find(symbol) == string::npos) {
+            cout << "Error: Invalid map symbol: " << symbol << endl;
+            campus.clear();
+            rows = 0;
+            cols = 0;
+            return false;
+        }
+
+        campus[i][j] = symbol;
     }
+}
 
     inputFile.close(); //Closes the file
     return true; //Returns true because the map loaded successfully
@@ -54,4 +72,92 @@ void CampusMap::displayMap() const {
     }
 
     cout << endl;
+}
+
+bool CampusMap::isValidCoordinate(int row, int col) const {
+    return row >= 0 && row < rows &&
+           col >= 0 && col < cols;
+}
+
+char CampusMap::getLocationSymbol(int row, int col) const {
+    if (!isValidCoordinate(row, col)) {
+        return '\0';
+    }
+
+    return campus[row][col];
+}
+
+string CampusMap::getLocationType(int row, int col) const {
+    switch (getLocationSymbol(row, col)) {
+        case 'R':
+            return "Road";
+        case 'B':
+            return "Building";
+        case 'C':
+            return "Classroom";
+        case 'L':
+            return "Library";
+        case 'P':
+            return "Parking Lot";
+        case 'X':
+            return "Blocked Area";
+        default:
+            return "Outside Map";
+    }
+}
+
+bool CampusMap::isBlocked(int row, int col) const {
+    return isValidCoordinate(row, col) &&
+           campus[row][col] == 'X';
+}
+
+void CampusMap::displayNeighbors(int row, int col) const {
+    if (!isValidCoordinate(row, col)) {
+        cout << "Invalid map coordinates." << endl;
+        return;
+    }
+
+    cout << "Neighboring Locations:" << endl;
+
+    if (isValidCoordinate(row - 1, col)) {
+        cout << "Up: "
+             << getLocationType(row - 1, col) << endl;
+    } else {
+        cout << "Up: Outside map" << endl;
+    }
+
+    if (isValidCoordinate(row + 1, col)) {
+        cout << "Down: "
+             << getLocationType(row + 1, col) << endl;
+    } else {
+        cout << "Down: Outside map" << endl;
+    }
+
+    if (isValidCoordinate(row, col - 1)) {
+        cout << "Left: "
+             << getLocationType(row, col - 1) << endl;
+    } else {
+        cout << "Left: Outside map" << endl;
+    }
+
+    if (isValidCoordinate(row, col + 1)) {
+        cout << "Right: "
+             << getLocationType(row, col + 1) << endl;
+    } else {
+        cout << "Right: Outside map" << endl;
+    }
+}
+
+int CampusMap::countSymbol(char symbol) const {
+    int count = 0;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (campus[i][j] == symbol) {
+                count++;
+            }
+        }
+    }
+
+    return count;
 }

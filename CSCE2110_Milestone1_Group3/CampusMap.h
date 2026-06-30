@@ -15,6 +15,12 @@ public:
 
     bool loadMap(const std::string& filename);
     void displayMap() const;
+    bool isValidCoordinate(int row, int col) const;
+    char getLocationSymbol(int row, int col) const;
+    std::string getLocationType(int row, int col) const;
+    bool isBlocked(int row, int col) const;
+    void displayNeighbors(int row, int col) const;
+    int countSymbol(char symbol) const;
 };
 
 #endif

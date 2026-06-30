@@ -26,6 +26,10 @@ public:
     bool addStudent(Student student);
     Student* searchStudent(int id);
     void displayStudents() const;
+    bool removeStudent(int id);
+    void sortByID();
+    int getStudentCount() const;
+    double getAverageGPA() const;
 };
 
 #endif

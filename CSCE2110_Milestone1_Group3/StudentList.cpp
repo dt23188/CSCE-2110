@@ -42,6 +42,36 @@ bool StudentList::addStudent(Student student) {
     return true;
 }
 
+bool StudentList::removeStudent(int id) {
+    if (head == nullptr) {
+        return false;
+    }
+
+    if (head->data.id == id) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        return true;
+    }
+
+    Node* current = head;
+
+    while (current->next != nullptr &&
+           current->next->data.id != id) {
+        current = current->next;
+    }
+
+    if (current->next == nullptr) {
+        return false;
+    }
+
+    Node* temp = current->next;
+    current->next = temp->next;
+    delete temp;
+
+    return true;
+}
+
 Student* StudentList::searchStudent(int id) {
     Node* current = head;
 
@@ -76,4 +106,59 @@ void StudentList::displayStudents() const {
 
         current = current->next;
     }
+}
+
+void StudentList::sortByID() {
+    if (head == nullptr || head->next == nullptr) {
+        return;
+    }
+
+    bool swapped;
+
+    do {
+        swapped = false;
+        Node* current = head;
+
+        while (current->next != nullptr) {
+            if (current->data.id > current->next->data.id) {
+                Student temp = current->data;
+                current->data = current->next->data;
+                current->next->data = temp;
+
+                swapped = true;
+            }
+
+            current = current->next;
+        }
+    } while (swapped);
+}
+
+int StudentList::getStudentCount() const {
+    int count = 0;
+    Node* current = head;
+
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+
+    return count;
+}
+
+double StudentList::getAverageGPA() const {
+    if (head == nullptr) {
+        return 0.0;
+    }
+
+    double totalGPA = 0.0;
+    int count = 0;
+    Node* current = head;
+
+    while (current != nullptr) {
+        totalGPA += current->data.gpa;
+        count++;
+        current = current->next;
+    }
+
+    return totalGPA / count;
 }
