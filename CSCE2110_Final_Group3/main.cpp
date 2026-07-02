@@ -79,7 +79,7 @@ float getValidGPA(const string& prompt) {
     }
 }
 
-//  Function to get student input from the user and return a Student object
+// Function to get student input from the user and return a Student object
 Student getStudentInput() {
     Student student;
 
@@ -98,16 +98,17 @@ Student getStudentInput() {
 
 // Main function to run the program
 int main() {
-	// Create instances of CampusMap and StudentList
+    // Create instances of CampusMap, StudentList, FileManager, and QueueSystem
     CampusMap campusMap;
     StudentList studentList;
+    FileManager fileManager;
     QueueSystem advisingQueue;
 
-	// Prompt the user for filenames and load the campus map and student records
+    // Prompt the user for filenames and load the campus map and student records
     string mapFilename;
     string studentFilename;
 
-	do {
+    do {
         cout << "Enter campus map filename: ";
         cin >> mapFilename;
     } while (!campusMap.loadMap(mapFilename));
@@ -117,21 +118,21 @@ int main() {
     do {
         cout << "Enter student records filename: ";
         cin >> studentFilename;
-    } while (!FileManager::loadStudents(
-    studentFilename,
-    studentList
+    } while (!fileManager.loadStudents(
+        studentFilename,
+        studentList
     ));
 
     cout << "Student records loaded successfully." << endl;
 
     int choice = 0;
 
-	// Loop until the user chooses menu options 1-4, option 5 exits
+    // Loop until the user chooses option 12 to exit
     while (choice != 12) {
-    displayMenu();
-    choice = getValidInteger("");
+        displayMenu();
+        choice = getValidInteger("");
 
-    switch (choice) {
+        switch (choice) {
         case 1:
             campusMap.displayMap();
             break;
@@ -150,14 +151,14 @@ int main() {
             }
 
             cout << "Location Type: "
-                 << campusMap.getLocationType(row, col)
-                 << endl;
+                << campusMap.getLocationType(row, col)
+                << endl;
 
             cout << "Blocked: "
-                 << (campusMap.isBlocked(row, col)
-                         ? "Yes"
-                         : "No")
-                 << endl;
+                << (campusMap.isBlocked(row, col)
+                    ? "Yes"
+                    : "No")
+                << endl;
 
             campusMap.displayNeighbors(row, col);
             break;
@@ -180,7 +181,8 @@ int main() {
 
             if (studentList.removeStudent(id)) {
                 cout << "Student removed successfully." << endl;
-            } else {
+            }
+            else {
                 cout << "Student not found." << endl;
             }
 
@@ -202,7 +204,8 @@ int main() {
                 cout << "Name: " << foundStudent->name << endl;
                 cout << "Major: " << foundStudent->major << endl;
                 cout << "GPA: " << foundStudent->gpa << endl;
-            } else {
+            }
+            else {
                 cout << "Student not found." << endl;
             }
 
@@ -251,47 +254,56 @@ int main() {
             cout << "Campus Statistics:" << endl;
 
             cout << "Total students: "
-                 << studentList.getStudentCount()
-                 << endl;
+                << studentList.getStudentCount()
+                << endl;
 
             cout << fixed << setprecision(2);
 
             cout << "Average GPA: "
-                 << studentList.getAverageGPA()
-                 << endl;
+                << studentList.getAverageGPA()
+                << endl;
 
             cout << "Buildings: "
-                 << campusMap.countSymbol('B')
-                 << endl;
+                << campusMap.countSymbol('B')
+                << endl;
 
             cout << "Classrooms: "
-                 << campusMap.countSymbol('C')
-                 << endl;
+                << campusMap.countSymbol('C')
+                << endl;
 
             cout << "Libraries: "
-                 << campusMap.countSymbol('L')
-                 << endl;
+                << campusMap.countSymbol('L')
+                << endl;
 
             cout << "Roads: "
-                 << campusMap.countSymbol('R')
-                 << endl;
+                << campusMap.countSymbol('R')
+                << endl;
 
             cout << "Pending advising requests: "
-                 << advisingQueue.getPendingCount()
-                 << endl;
+                << advisingQueue.getPendingCount()
+                << endl;
 
             break;
 
         case 12:
+            cout << "Saving student records..." << endl;
+
+            if (fileManager.saveStudents(studentFilename, studentList)) {
+                cout << "Student records saved successfully." << endl;
+            }
+            else {
+                cout << "Warning: Student records could not be saved." << endl;
+            }
+
             cout << "Exiting program." << endl;
             break;
 
         default:
             cout << "Invalid choice. Enter a number from 1 to 12."
-                 << endl;
+                << endl;
             break;
+        }
     }
-}
 
     return 0;
 }
