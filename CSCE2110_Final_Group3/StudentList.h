@@ -19,6 +19,9 @@ class StudentList {
 private:
     Node* head;
 
+    // Allow FileManager to access private members for file operations
+    friend class FileManager;
+
 public:
     StudentList();
     ~StudentList();
@@ -26,6 +29,10 @@ public:
     bool addStudent(Student student);
     Student* searchStudent(int id);
     void displayStudents() const;
+    bool removeStudent(int id);
+    void sortByID();
+    int getStudentCount() const;
+    double getAverageGPA() const;
 };
 
 #endif
