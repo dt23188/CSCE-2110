@@ -41,11 +41,11 @@ void QueueSystem::displayPendingRequests() const {
         AdvisingRequest request = tempQueue.front();
 
         cout << number
-             << ". Student ID: "
-             << request.studentID << endl;
+            << ". Student ID: "
+            << request.studentID << endl;
 
         cout << "   Issue: "
-             << request.issueDescription << endl;
+            << request.issueDescription << endl;
 
         tempQueue.pop();
         number++;
