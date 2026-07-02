@@ -29,7 +29,8 @@ bool StudentList::addStudent(Student student) {
 
     if (head == nullptr) {
         head = newNode;
-    } else {
+    }
+    else {
         Node* current = head;
 
         while (current->next != nullptr) {
@@ -57,7 +58,7 @@ bool StudentList::removeStudent(int id) {
     Node* current = head;
 
     while (current->next != nullptr &&
-           current->next->data.id != id) {
+        current->next->data.id != id) {
         current = current->next;
     }
 
