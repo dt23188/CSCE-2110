@@ -19,6 +19,9 @@ class StudentList {
 private:
     Node* head;
 
+    // Allow FileManager to access private members for file operations
+    friend class FileManager;
+
 public:
     StudentList();
     ~StudentList();
